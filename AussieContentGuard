@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AussieContentGuard: Localised Content & Compliance Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- 
+        Palette: Electric Ocean
+        Primary Blue: #2563EB
+        Secondary Orange: #F59E0B
+        Background: #F3F4F6
+        Dark Text: #111827
+        
+        CONFIRMATION: 
+        - NO SVG graphics used.
+        - NO Mermaid JS used.
+        - Chart.js used for data visualization.
+        - Structured HTML/CSS used for diagrams.
+    -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+            color: #111827;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Max width to prevent excessive stretching */
+            height: 350px;    /* Base height */
+            max-height: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Responsive adjustments for chart height */
+        @media (max-width: 640px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        /* Custom diagram connectors */
+        .connector-line {
+            width: 2px;
+            background-color: #cbd5e1;
+            flex-grow: 1;
+            min-height: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .connector-line-horizontal {
+                height: 2px;
+                width: 40px;
+                background-color: #cbd5e1;
+                min-height: 0;
+            }
+        }
+
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .card-shadow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* New style for the animated mouse follower */
+        .mouse-follower {
+            position: fixed;
+            transform: translate(-50%, -50%); /* Centers the element on the cursor coordinates */
+            transition: left 0.05s linear, top 0.05s linear; /* Smooth, quick movement */
+            pointer-events: none; /* Allows clicks to pass through to elements beneath */
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Mouse Follower Element (Rocket) -->
+    <div id="rocket-follower" class="mouse-follower text-4xl hidden">🚀</div>
+
+    <!-- Header Section -->
+    <header class="bg-blue-600 text-white py-12 px-4 shadow-lg">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">AussieContentGuard</h1>
+            <p class="text-xl md:text-2xl font-light text-blue-100 max-w-3xl mx-auto">
+                Localised Content & Compliance Engine for Australian E-commerce
+            </p>
+            <div class="mt-8 flex flex-wrap justify-center gap-4">
+                <span class="bg-blue-700 px-4 py-2 rounded-full text-sm font-semibold border border-blue-400">⚡ Speed</span>
+                <span class="bg-blue-700 px-4 py-2 rounded-full text-sm font-semibold border border-blue-400">🛡️ Safety</span>
+                <span class="bg-blue-700 px-4 py-2 rounded-full text-sm font-semibold border border-blue-400">🇦🇺 Local Relevance</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-4 py-12 space-y-16">
+
+        <!-- Section 1: Introduction & The Problem -->
+        <section>
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">The Triple Challenge</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Australian retailers face a unique set of hurdles: strict consumer laws, a geographically diverse market, and the constant pressure to scale content creation. Manual methods are failing to keep up.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white p-8 rounded-xl card-shadow border-t-4 border-amber-500">
+                    <div class="text-5xl mb-4 text-center">⚖️</div>
+                    <h3 class="text-xl font-bold text-center mb-2">Compliance Risk (ACL)</h3>
+                    <p class="text-gray-600 text-sm text-center">
+                        High risk of breaching Australian Consumer Law (ACL) or product safety standards due to manual errors or missing warnings.
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white p-8 rounded-xl card-shadow border-t-4 border-blue-500">
+                    <div class="text-5xl mb-4 text-center">📝</div>
+                    <h3 class="text-xl font-bold text-center mb-2">Generic Content</h3>
+                    <p class="text-gray-600 text-sm text-center">
+                        Descriptions lack local context. "One size fits all" copy fails to resonate with shoppers in specific suburbs or regions.
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white p-8 rounded-xl card-shadow border-t-4 border-red-500">
+                    <div class="text-5xl mb-4 text-center">🐢</div>
+                    <h3 class="text-xl font-bold text-center mb-2">Manual Bottlenecks</h3>
+                    <p class="text-gray-600 text-sm text-center">
+                        Scaling to thousands of SKUs is slow and expensive. Updates lag behind, hurting time-to-market.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: The Solution Architecture (Diagram) -->
+        <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6 border-l-4 border-blue-600 pl-4">The Solution Engine</h2>
+            <p class="text-gray-600 mb-10">
+                AussieContentGuard integrates three critical layers into one automated workflow. It ingests raw data, processes it through intelligent filters, and delivers market-ready content.
+            </p>
+
+            <!-- Flow Diagram Structure (NO SVG) -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 relative">
+                
+                <!-- Step 1: Ingest -->
+                <div class="flex flex-col items-center w-full md:w-1/4">
+                    <div class="w-full bg-gray-100 border-2 border-dashed border-gray-400 rounded-lg p-4 text-center h-32 flex flex-col justify-center items-center">
+                        <span class="text-3xl mb-2">📂</span>
+                        <h4 class="font-bold text-gray-700">Ingestion</h4>
+                        <p class="text-xs text-gray-500">CSV & API<br>(Shopify/Woo)</p>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="hidden md:block text-gray-400 text-2xl">➔</div>
+                <div class="md:hidden text-gray-400 text-2xl transform rotate-90 my-2">➔</div>
+
+                <!-- Step 2: The Core Engine -->
+                <div class="flex flex-col items-center w-full md:w-1/3">
+                    <div class="w-full bg-blue-50 border border-blue-200 rounded-xl p-6 shadow-sm relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-2 bg-blue-500"></div>
+                        <h4 class="font-bold text-blue-900 text-center mb-4">AussieContentGuard Engine</h4>
+                        
+                        <div class="space-y-3">
+                            <div class="bg-white p-3 rounded shadow-sm border-l-4 border-purple-500 flex items-center">
+                                <span class="mr-2">🧠</span>
+                                <div class="text-sm font-semibold">AI Content Gen</div>
+                            </div>
+                            <div class="bg-white p-3 rounded shadow-sm border-l-4 border-amber-500 flex items-center">
+                                <span class="mr-2">🛡️</span>
+                                <div class="text-sm font-semibold">Compliance Checks (ACL)</div>
+                            </div>
+                            <div class="bg-white p-3 rounded shadow-sm border-l-4 border-green-500 flex items-center">
+                                <span class="mr-2">📍</span>
+                                <div class="text-sm font-semibold">Local Profiles</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow -->
+                <div class="hidden md:block text-gray-400 text-2xl">➔</div>
+                <div class="md:hidden text-gray-400 text-2xl transform rotate-90 my-2">➔</div>
+
+                <!-- Step 3: Output -->
+                <div class="flex flex-col items-center w-full md:w-1/4">
+                    <div class="w-full bg-green-50 border border-green-200 rounded-lg p-4 text-center h-32 flex flex-col justify-center items-center shadow-sm">
+                        <span class="text-3xl mb-2">✅</span>
+                        <h4 class="font-bold text-green-800">Market Ready</h4>
+                        <p class="text-xs text-green-600">Compliant, Optimised<br>& Localised Content</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 3: Operational Efficiency Data -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 border-l-4 border-blue-600 pl-4">Accelerating Time-to-Market</h2>
+                <p class="text-gray-600 mb-6">
+                    By automating the drafting and compliance checking process, AussieContentGuard drastically reduces the man-hours required to launch new products.
+                </p>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2 font-bold">✓</span>
+                        <span>Bulk generation for 1000+ SKUs in minutes.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2 font-bold">✓</span>
+                        <span>Instant "Pass/Fail" compliance feedback.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-blue-500 mr-2 font-bold">✓</span>
+                        <span>Frees up marketing teams for strategy.</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Chart Container -->
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Time to List 500 SKUs (Hours)</h3>
+                <div class="chart-container">
+                    <canvas id="efficiencyChart"></canvas>
+                </div>
+                <p class="text-xs text-center text-gray-400 mt-2">Comparison: Traditional Manual Process vs. ACG Automation</p>
+            </div>
+        </section>
+
+        <!-- Section 4: Deep Dive - Compliance & Localisation -->
+        <section>
+             <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Intelligent Processing</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                   The system doesn't just write; it checks and adapts. Here is a breakdown of the rule types protecting merchants and the granularity of localisation available.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Compliance Breakdown -->
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Compliance Rule Composition</h3>
+                    <div class="chart-container">
+                        <canvas id="complianceChart"></canvas>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-4 px-4 text-center">
+                        <strong>Safety First:</strong> The majority of rules focus on ACL (Australian Consumer Law) mandates and critical Safety Warnings.
+                    </p>
+                </div>
+
+                <!-- Localisation Impact -->
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Localisation Targeting Levels</h3>
+                    <div class="chart-container">
+                        <canvas id="localisationChart"></canvas>
+                    </div>
+                     <p class="text-sm text-gray-500 mt-4 px-4 text-center">
+                        <strong>Hyper-Local:</strong> Moving beyond generic "Australia-wide" copy to specific Cities and Suburb Clusters drives higher engagement.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Stakeholder Value -->
+        <section class="bg-blue-50 rounded-2xl p-8 md:p-12">
+             <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="w-full md:w-1/2 order-2 md:order-1">
+                     <div class="chart-container">
+                        <canvas id="stakeholderChart"></canvas>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 order-1 md:order-2">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4 border-l-4 border-amber-500 pl-4">Value Across the Business</h2>
+                    <p class="text-gray-600 mb-6">
+                        AussieContentGuard delivers specific outcomes for every key stakeholder in the e-commerce lifecycle.
+                    </p>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-white p-4 rounded shadow-sm">
+                            <strong class="text-blue-600">Marketing:</strong> Maximizes Local SEO & Conversion.
+                        </div>
+                        <div class="bg-white p-4 rounded shadow-sm">
+                            <strong class="text-amber-600">Compliance:</strong> Minimizes Risk & Legal Exposure.
+                        </div>
+                        <div class="bg-white p-4 rounded shadow-sm">
+                            <strong class="text-gray-800">Tech/Ops:</strong> Standardizes Data & Increases Velocity.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Roadmap Timeline -->
+        <section>
+            <h2 class="text-3xl font-bold text-gray-900 mb-10 text-center">Implementation Roadmap</h2>
+            <div class="max-w-3xl mx-auto relative">
+                <!-- Vertical Line -->
+                <div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 bg-gray-300 transform md:-translate-x-1/2"></div>
+
+                <!-- Phase 1 -->
+                <div class="relative z-10 mb-8 flex flex-col md:flex-row items-center w-full">
+                    <div class="order-1 w-full md:w-5/12 md:text-right pr-0 md:pr-8 pl-20 md:pl-0">
+                        <h3 class="font-bold text-lg text-blue-600">Phase 1: Foundation</h3>
+                        <p class="text-sm text-gray-500">Weeks 1-2</p>
+                        <p class="text-gray-700 mt-2 text-sm">Design core rules (ACL) & location profiles. Select integration targets.</p>
+                    </div>
+                    <div class="absolute left-8 md:left-1/2 w-8 h-8 bg-blue-600 rounded-full border-4 border-white transform -translate-x-1/2 flex items-center justify-center text-white text-xs font-bold">1</div>
+                    <div class="order-2 w-full md:w-5/12 pl-20 md:pl-8"></div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="relative z-10 mb-8 flex flex-col md:flex-row items-center w-full">
+                    <div class="order-1 w-full md:w-5/12 md:text-right pr-0 md:pr-8 pl-20 md:pl-0"></div>
+                    <div class="absolute left-8 md:left-1/2 w-8 h-8 bg-amber-500 rounded-full border-4 border-white transform -translate-x-1/2 flex items-center justify-center text-white text-xs font-bold">2</div>
+                    <div class="order-2 w-full md:w-5/12 pl-20 md:pl-8">
+                        <h3 class="font-bold text-lg text-amber-600">Phase 2: Core Build</h3>
+                        <p class="text-sm text-gray-500">Weeks 3-6</p>
+                        <p class="text-gray-700 mt-2 text-sm">Develop Ingestion, AI Gen Service, Compliance Engine & UI.</p>
+                    </div>
+                </div>
+
+                 <!-- Phase 3 -->
+                <div class="relative z-10 mb-8 flex flex-col md:flex-row items-center w-full">
+                    <div class="order-1 w-full md:w-5/12 md:text-right pr-0 md:pr-8 pl-20 md:pl-0">
+                        <h3 class="font-bold text-lg text-blue-600">Phase 3: Integration</h3>
+                        <p class="text-sm text-gray-500">Weeks 7-8</p>
+                        <p class="text-gray-700 mt-2 text-sm">Shopify/Woo API integration. Enable Location Profiles logic & CSV Export.</p>
+                    </div>
+                    <div class="absolute left-8 md:left-1/2 w-8 h-8 bg-blue-600 rounded-full border-4 border-white transform -translate-x-1/2 flex items-center justify-center text-white text-xs font-bold">3</div>
+                    <div class="order-2 w-full md:w-5/12 pl-20 md:pl-8"></div>
+                </div>
+
+                <!-- Phase 4 -->
+                 <div class="relative z-10 mb-8 flex flex-col md:flex-row items-center w-full">
+                    <div class="order-1 w-full md:w-5/12 md:text-right pr-0 md:pr-8 pl-20 md:pl-0"></div>
+                    <div class="absolute left-8 md:left-1/2 w-8 h-8 bg-green-500 rounded-full border-4 border-white transform -translate-x-1/2 flex items-center justify-center text-white text-xs font-bold">4</div>
+                    <div class="order-2 w-full md:w-5/12 pl-20 md:pl-8">
+                        <h3 class="font-bold text-lg text-green-600">Phase 4: Pilot</h3>
+                        <p class="text-sm text-gray-500">Weeks 9-12</p>
+                        <p class="text-gray-700 mt-2 text-sm">Merchant pilot launch. Measure time savings & compliance rates.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: External Industry Validation & Case Studies -->
+        <section class="bg-gray-800 text-white rounded-2xl p-8 md:p-12 shadow-2xl">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold mb-4">Industry Validation & Proof Points</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    AussieContentGuard builds on established, best-in-class technologies for AI content, compliance, and localisation. See how these core components drive success globally.
+                </p>
+            </div>
+            
+            <!-- External Case Study Link Blocks -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+                
+                <!-- Link 1: Bulk AI Product Descriptions (Describely) -->
+                <a href="https://describely.ai/customers/" target="_blank" class="block bg-gray-900 p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition duration-300 hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-400 mb-2">AI Product Generation</h3>
+                    <p class="text-sm text-gray-400 min-h-[60px]">
+                        For bulk AI product descriptions (similar to our content engine): See Describely's customer stories.
+                    </p>
+                    <span class="mt-3 inline-block text-blue-500 font-semibold text-sm">Click to Learn More ➔</span>
+                </a>
+
+                <!-- Link 2: AI-driven Product Compliance (SupplyScope) -->
+                <a href="https://supplyscope.io/product-compliance/" target="_blank" class="block bg-gray-900 p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition duration-300 hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-400 mb-2">Centralized Compliance</h3>
+                    <p class="text-sm text-gray-400 min-h-[60px]">
+                        For AI-driven product compliance workflows (similar to our compliance layer): See SupplyScope's product compliance solutions.
+                    </p>
+                    <span class="mt-3 inline-block text-blue-500 font-semibold text-sm">Click to Learn More ➔</span>
+                </a>
+
+                <!-- Link 3: AI/Localisation by Market/Region (Travod) -->
+                <a href="https://travod.com/customer-stories/ai-powered-localisation-case-study-2" target="_blank" class="block bg-gray-900 p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition duration-300 hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-400 mb-2">Region-Specific AI</h3>
+                    <p class="text-sm text-gray-400 min-h-[60px]">
+                        For AI/localisation used to adapt content by market/region (similar to our suburb profiles): See this localisation case study.
+                    </p>
+                    <span class="mt-3 inline-block text-blue-500 font-semibold text-sm">Click to Learn More ➔</span>
+                </a>
+
+                <!-- Link 4: General AI-based Compliance and Marketing Review (NanomatrixSecure) -->
+                <a href="https://nanomatrixsecure.com/ai-driven-compliance-case-studies-success-stories/" target="_blank" class="block bg-gray-900 p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition duration-300 hover:shadow-xl">
+                    <h3 class="text-xl font-bold text-blue-400 mb-2">AI Content Review</h3>
+                    <p class="text-sm text-gray-400 min-h-[60px]">
+                        For AI-based compliance and marketing review generally: See these AI-driven compliance success stories.
+                    </p>
+                    <span class="mt-3 inline-block text-blue-500 font-semibold text-sm">Click to Learn More ➔</span>
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
+        <p>&copy; 2025 AussieContentGuard. Developed by Sahan Indunil.</p>
+        <p class="mt-2">Generated for concept demonstration purposes.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Utility: Label Wrapping Logic (16 chars) ---
+        function processLabels(labels) {
+            return labels.map(label => {
+                if (typeof label === 'string' && label.length > 16) {
+                    const words = label.split(' ');
+                    const lines = [];
+                    let currentLine = words[0];
+                    for (let i = 1; i < words.length; i++) {
+                        if ((currentLine + " " + words[i]).length <= 16) {
+                            currentLine += " " + words[i];
+                        } else {
+                            lines.push(currentLine);
+                            currentLine = words[i];
+                        }
+                    }
+                    lines.push(currentLine);
+                    return lines;
+                }
+                return label;
+            });
+        }
+
+        // --- 2. Utility: Common Tooltip Configuration ---
+        const commonTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+        
+        // --- 3. Mouse Follower Logic ---
+        document.addEventListener('mousemove', (e) => {
+            const rocket = document.getElementById('rocket-follower');
+            // Update position
+            rocket.style.left = `${e.clientX}px`;
+            rocket.style.top = `${e.clientY}px`;
+            // Ensure visibility after first move
+            if (rocket.classList.contains('hidden')) {
+                rocket.classList.remove('hidden');
+            }
+        });
+        
+        // Hide the rocket when the mouse leaves the viewport
+        document.addEventListener('mouseleave', () => {
+            const rocket = document.getElementById('rocket-follower');
+            if (!rocket.classList.contains('hidden')) {
+                rocket.classList.add('hidden');
+            }
+        });
+
+        // --- 4. Chart Implementations ---
+
+        // Chart 1: Efficiency (Bar Chart)
+        const ctxEfficiency = document.getElementById('efficiencyChart').getContext('2d');
+        const labelsEfficiency = processLabels(['Manual Copywriting', 'AussieContentGuard']);
+        new Chart(ctxEfficiency, {
+            type: 'bar',
+            data: {
+                labels: labelsEfficiency,
+                datasets: [{
+                    label: 'Hours to List 500 SKUs',
+                    data: [120, 5], // 120 hours vs 5 hours estimate
+                    backgroundColor: ['#9CA3AF', '#2563EB'], // Gray vs Brand Blue
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y', // Horizontal bar
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltipConfig
+                },
+                scales: {
+                    x: { beginAtZero: true, grid: { display: false } },
+                    y: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Chart 2: Compliance Composition (Doughnut)
+        const ctxCompliance = document.getElementById('complianceChart').getContext('2d');
+        // Labels updated for clarity
+        const labelsCompliance = processLabels(['ACL (Australian Consumer Law)', 'Safety Warnings', 'Category Specific', 'Brand Voice']);
+        new Chart(ctxCompliance, {
+            type: 'doughnut',
+            data: {
+                labels: labelsCompliance,
+                datasets: [{
+                    data: [35, 30, 20, 15],
+                    backgroundColor: ['#2563EB', '#F59E0B', '#10B981', '#6366F1'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right' },
+                    tooltip: commonTooltipConfig
+                }
+            }
+        });
+
+        // Chart 3: Localisation (Bar/Pie hybrid - using Bar for clarity on hierarchy)
+        const ctxLocalisation = document.getElementById('localisationChart').getContext('2d');
+        const labelsLocalisation = processLabels(['National (Generic)', 'State Level', 'City/Metro', 'Suburb Clusters']);
+        new Chart(ctxLocalisation, {
+            type: 'bar',
+            data: {
+                labels: labelsLocalisation,
+                datasets: [{
+                    label: 'Relevance Score',
+                    data: [30, 55, 80, 95],
+                    backgroundColor: ['#E5E7EB', '#93C5FD', '#3B82F6', '#1E40AF'],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: commonTooltipConfig
+                },
+                scales: {
+                    y: { beginAtZero: true, max: 100 }
+                }
+            }
+        });
+
+        // Chart 4: Stakeholder Value (Radar)
+        const ctxStakeholder = document.getElementById('stakeholderChart').getContext('2d');
+        const labelsStakeholder = processLabels(['Speed', 'Risk Reduction', 'Local SEO', 'Consistency', 'Cost Efficiency']);
+        new Chart(ctxStakeholder, {
+            type: 'radar',
+            data: {
+                labels: labelsStakeholder,
+                datasets: [{
+                    label: 'AussieContentGuard',
+                    data: [95, 90, 85, 90, 80],
+                    fill: true,
+                    backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                    borderColor: '#2563EB',
+                    pointBackgroundColor: '#2563EB',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#2563EB'
+                }, {
+                    label: 'Manual Process',
+                    data: [20, 40, 30, 50, 20],
+                    fill: true,
+                    backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                    borderColor: '#F59E0B',
+                    pointBackgroundColor: '#F59E0B',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#F59E0B'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { display: true },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                },
+                plugins: {
+                    tooltip: commonTooltipConfig
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
